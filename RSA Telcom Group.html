@@ -1,0 +1,1119 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>RSA Telcom Group</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: sticky header, full-bleed hero with an animated FTTH network (OLT > FDT > FAT > ONT), then calm sections on a black ground. One bold moment: the hero network. */
+:root{
+  --bg:#04060A; --bg-2:#070B12; --panel:#0A111D; --line:#15223B; --line-2:#24386300;
+  --line-hi:#24396A; --blue:#2563FF; --blue-hi:#5B93FF; --glow:#8DBBFF; --white:#F5F8FC; --mute:#97A4BC;
+  --ok:#5B93FF; --warn:#F2B84B; --bad:#FF6B6B;
+  --f-d:'Bricolage Grotesque','Segoe UI',system-ui,sans-serif;
+  --f-b:'IBM Plex Sans','Segoe UI',system-ui,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--white);font:400 16px/1.65 var(--f-b);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3{font-family:var(--f-d);font-weight:700;line-height:1.08;letter-spacing:-.02em;margin:0;text-wrap:balance}
+p{margin:0}
+a{color:inherit}
+.w{width:100%;max-width:1200px;margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+:focus-visible{outline:2px solid var(--glow);outline-offset:3px;border-radius:4px}
+.sec{padding-block:clamp(56px,9vw,112px)}
+.sec h2{font-size:clamp(1.8rem,3.6vw,2.9rem)}
+.lead{font-size:clamp(1.02rem,1.5vw,1.2rem);color:var(--mute);max-width:60ch}
+.dim{color:var(--mute)}
+
+/* header */
+.hd{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:rgba(4,6,10,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.hd-in{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 32px;padding-block:14px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.brand svg{flex:none}
+.brand b{display:block;font:800 1.25rem/1 var(--f-d);letter-spacing:.01em}
+.brand span{display:block;font-size:.68rem;letter-spacing:.2em;color:var(--mute);margin-top:4px;text-transform:uppercase}
+.nav{display:flex;flex-wrap:wrap;gap:4px 6px;list-style:none;margin:0;padding:0}
+.nav a{display:block;text-decoration:none;color:var(--mute);padding:8px 14px;border-radius:999px;font-weight:500;font-size:.95rem;transition:color .2s,background .2s}
+.nav a:hover{color:var(--white)}
+.nav a[aria-current="page"]{color:var(--white);background:rgba(37,99,255,.18);box-shadow:inset 0 0 0 1px var(--line-hi)}
+@media(max-width:560px){.nav{width:100%;justify-content:space-between}.nav a{padding:8px 10px;font-size:.88rem}}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:600 .98rem/1 var(--f-b);padding:15px 24px;border-radius:999px;text-decoration:none;border:1px solid transparent;cursor:pointer;transition:background .2s,border-color .2s,transform .2s}
+.btn-p{background:var(--blue);color:#fff;box-shadow:0 8px 30px -8px rgba(37,99,255,.7)}
+.btn-p:hover{background:var(--blue-hi)}
+.btn-o{border-color:rgba(245,248,252,.32);color:var(--white);background:transparent}
+.btn-o:hover{border-color:var(--white);background:rgba(245,248,252,.06)}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px}
+
+/* hero */
+.hero{position:relative;padding-top:clamp(44px,7vw,92px);background:
+  radial-gradient(60% 55% at 85% 0%,rgba(37,99,255,.28),transparent 70%),
+  radial-gradient(40% 40% at 0% 30%,rgba(37,99,255,.10),transparent 70%),var(--bg)}
+.hero h1{font-size:clamp(2.5rem,6.4vw,5.3rem);font-weight:800;letter-spacing:-.035em;max-width:15ch}
+.hero .lead{margin-top:clamp(18px,2.4vw,28px)}
+.hero .cta-row{margin-top:clamp(24px,3vw,36px)}
+.netwrap{position:relative;margin-top:clamp(32px,5vw,64px);border-block:1px solid var(--line);
+  background:
+   linear-gradient(rgba(91,147,255,.055) 1px,transparent 1px) 0 0/48px 48px,
+   linear-gradient(90deg,rgba(91,147,255,.055) 1px,transparent 1px) 0 0/48px 48px,
+   linear-gradient(180deg,rgba(7,11,18,.0),rgba(7,11,18,.9))}
+#net{display:block;width:100%;height:clamp(300px,40vw,470px)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 28px;padding-block:16px;font-size:.86rem;color:var(--mute)}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:9px;vertical-align:baseline}
+.legend .dn{background:var(--blue-hi);box-shadow:0 0 10px 2px rgba(91,147,255,.8)}
+.legend .up{background:#fff;box-shadow:0 0 10px 2px rgba(255,255,255,.5)}
+
+/* spec strip */
+.specs{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));border-bottom:1px solid var(--line)}
+.spec{padding:28px 24px 28px 0;display:flex;flex-direction:column;gap:6px}
+.spec+.spec{padding-left:24px;border-left:1px solid var(--line)}
+.spec b{font:700 1.45rem/1.15 var(--f-d);letter-spacing:-.01em}
+.spec span{font-size:.9rem;color:var(--mute)}
+@media(max-width:480px){.spec,.spec+.spec{padding:18px 0;border-left:0}.spec+.spec{border-top:1px solid var(--line)}}
+
+/* services */
+.svc{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(28px,6vw,88px);align-items:start}
+.svc-head{position:sticky;top:110px;display:grid;gap:18px}
+.rows{display:grid}
+.row{display:grid;grid-template-columns:44px minmax(0,1fr);gap:20px;padding-block:28px;border-top:1px solid var(--line)}
+.row:last-child{border-bottom:1px solid var(--line)}
+.row svg{width:44px;height:44px;color:var(--blue-hi)}
+.row h3{font-size:1.35rem;margin-bottom:8px}
+.row p{color:var(--mute);max-width:54ch}
+@media(max-width:860px){.svc{grid-template-columns:minmax(0,1fr)}.svc-head{position:static}}
+
+/* process */
+.proc{background:var(--bg-2);border-block:1px solid var(--line)}
+.steps{list-style:none;margin:clamp(32px,5vw,56px) 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:28px 22px}
+.step{position:relative;padding-top:30px;border-top:2px solid var(--line-hi)}
+.step::before{content:"";position:absolute;top:-7px;left:0;width:12px;height:12px;border-radius:50%;background:var(--blue);box-shadow:0 0 0 4px rgba(37,99,255,.25),0 0 16px 2px rgba(91,147,255,.7)}
+.step small{display:block;color:var(--blue-hi);font-weight:600;font-size:.85rem;margin-bottom:6px;font-variant-numeric:tabular-nums}
+.step h3{font-size:1.1rem;margin-bottom:8px}
+.step p{font-size:.92rem;color:var(--mute)}
+
+/* calculator */
+.calc{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(28px,6vw,80px);align-items:center}
+.panel{background:var(--panel);border:1px solid var(--line-hi);border-radius:14px;padding:clamp(20px,3vw,34px);display:grid;gap:22px;box-shadow:0 30px 80px -40px rgba(37,99,255,.55)}
+.ctl{display:grid;gap:8px}
+.ctl label{display:flex;justify-content:space-between;gap:12px;font-weight:500;font-size:.95rem}
+.ctl label output{color:var(--glow);font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--blue-hi);height:28px;background:transparent}
+select{width:100%;padding:12px 14px;background:var(--bg);color:var(--white);border:1px solid var(--line-hi);border-radius:8px;font:500 1rem var(--f-b)}
+.res{display:grid;gap:12px;padding-top:6px;border-top:1px solid var(--line)}
+.res-top{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 16px}
+.res-top strong{font:800 clamp(2rem,4vw,2.8rem)/1 var(--f-d);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.pill{font-size:.82rem;font-weight:600;padding:6px 12px;border-radius:999px;border:1px solid currentColor}
+.pill.ok{color:var(--ok)}.pill.warn{color:var(--warn)}.pill.bad{color:var(--bad)}
+.bar{position:relative;height:12px;border-radius:99px;background:var(--bg);border:1px solid var(--line-hi);overflow:hidden}
+.bar i{position:absolute;inset:0 auto 0 0;width:50%;background:linear-gradient(90deg,#1B47C9,var(--blue-hi));border-radius:99px;transition:width .25s}
+.bar-lim{position:relative;height:0}
+.bar-lim span{position:absolute;left:80%;top:-30px;width:2px;height:26px;background:#fff;opacity:.9}
+.bar-cap{display:flex;justify-content:space-between;font-size:.8rem;color:var(--mute);margin-top:2px}
+.bd{display:grid;grid-template-columns:1fr auto;gap:4px 16px;font-size:.9rem;color:var(--mute);font-variant-numeric:tabular-nums}
+.bd dd{margin:0;text-align:right;color:var(--white)}
+.bd dt{margin:0}
+.note{font-size:.82rem;color:var(--mute)}
+@media(max-width:860px){.calc{grid-template-columns:minmax(0,1fr)}}
+
+/* cta band */
+.band{border-top:1px solid var(--line);background:radial-gradient(60% 120% at 100% 100%,rgba(37,99,255,.3),transparent 70%),var(--bg-2)}
+.band-in{display:flex;flex-wrap:wrap;gap:24px 40px;align-items:center;justify-content:space-between}
+.band h2{max-width:20ch}
+
+/* page heads */
+.ph{padding-top:clamp(48px,8vw,104px);padding-bottom:clamp(28px,4vw,48px);background:radial-gradient(55% 90% at 100% 0%,rgba(37,99,255,.22),transparent 70%)}
+.ph h1{font-size:clamp(2.3rem,5.4vw,4.4rem);font-weight:800;letter-spacing:-.03em;max-width:18ch}
+.ph .lead{margin-top:18px}
+
+/* about */
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,5vw,72px)}
+.two p+p{margin-top:16px}
+.two p{color:var(--mute)}
+.two p:first-child{color:var(--white)}
+@media(max-width:760px){.two{grid-template-columns:minmax(0,1fr)}}
+.vals{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:0;border-top:1px solid var(--line)}
+.val{padding:28px 28px 28px 0}
+.val+.val{padding-left:28px;border-left:1px solid var(--line)}
+.val h3{font-size:1.25rem;margin-bottom:10px}
+.val p{color:var(--mute);font-size:.97rem}
+@media(max-width:760px){.val,.val+.val{padding:22px 0;border-left:0}.val+.val{border-top:1px solid var(--line)}}
+.team{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px;margin-top:36px}
+.person{display:grid;gap:14px;padding:22px;background:var(--panel);border:1px solid var(--line);border-radius:12px}
+.av{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;font:700 1.25rem var(--f-d);background:linear-gradient(140deg,#1B47C9,#0B1A47);border:1px solid var(--line-hi);color:#fff}
+.person h3{font-size:1.1rem}
+.person p{font-size:.9rem;color:var(--mute)}
+.tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.tag{padding:9px 16px;border:1px dashed var(--line-hi);border-radius:999px;font-size:.9rem;color:var(--mute)}
+
+/* portfolio */
+.filters{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:32px}
+.chip{font:500 .92rem var(--f-b);padding:10px 18px;border-radius:999px;border:1px solid var(--line-hi);background:transparent;color:var(--mute);cursor:pointer;transition:all .2s}
+.chip:hover{color:var(--white);border-color:var(--blue-hi)}
+.chip[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:22px}
+.proj{display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;transition:border-color .25s,transform .25s}
+.proj:hover{border-color:var(--blue-hi)}
+.thumb{position:relative;aspect-ratio:16/9;max-width:100%;background:
+  linear-gradient(rgba(91,147,255,.06) 1px,transparent 1px) 0 0/28px 28px,
+  linear-gradient(90deg,rgba(91,147,255,.06) 1px,transparent 1px) 0 0/28px 28px,
+  radial-gradient(80% 90% at 20% 50%,rgba(37,99,255,.28),transparent 75%),var(--bg-2);border-bottom:1px solid var(--line)}
+.thumb svg{position:absolute;inset:0;width:100%;height:100%}
+.thumb .kind{position:absolute;left:12px;top:12px;font-size:.78rem;font-weight:600;padding:5px 11px;border-radius:999px;background:rgba(4,6,10,.7);border:1px solid var(--line-hi)}
+.pbody{padding:20px 22px 22px;display:grid;gap:6px}
+.pbody h3{font-size:1.2rem}
+.pbody .loc{color:var(--mute);font-size:.92rem}
+.meta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+.meta div{display:grid;gap:2px}
+.meta b{font:700 1.05rem var(--f-d);font-variant-numeric:tabular-nums}
+.meta span{font-size:.78rem;color:var(--mute)}
+
+.proj{cursor:pointer}
+.proj .more{margin-top:14px;font-size:.88rem;font-weight:600;color:var(--blue-hi)}
+.proj:hover .more{color:var(--glow)}
+
+/* project modal */
+.md{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;
+  padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
+  background:rgba(2,4,8,.82);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);animation:mfade .2s ease}
+.md-card{position:relative;width:100%;max-width:880px;max-height:100%;overflow-y:auto;background:var(--panel);border:1px solid var(--line-hi);border-radius:16px;box-shadow:0 40px 120px -30px rgba(37,99,255,.55);animation:mrise .25s ease}
+.m-x{position:absolute;top:14px;right:14px;z-index:2;width:42px;height:42px;border-radius:50%;border:1px solid var(--line-hi);background:rgba(4,6,10,.8);color:var(--white);cursor:pointer;display:grid;place-items:center}
+.m-x:hover{border-color:var(--blue-hi)}
+.md .thumb{border-radius:16px 16px 0 0;aspect-ratio:21/9}
+.m-in{padding:clamp(20px,4vw,40px);display:grid;gap:26px}
+.m-in h2{font-size:clamp(1.6rem,3.4vw,2.4rem)}
+.m-in h3{font-size:1.05rem;margin-bottom:10px}
+.m-in p{color:var(--mute);max-width:64ch}
+.m-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:0;border-block:1px solid var(--line)}
+.m-meta div{display:grid;gap:2px;padding:16px 16px 16px 0}
+.m-meta div+div{padding-left:16px;border-left:1px solid var(--line)}
+.m-meta b{font:700 1.35rem var(--f-d);font-variant-numeric:tabular-nums}
+.m-meta span{font-size:.82rem;color:var(--mute)}
+.m-dl{display:grid;grid-template-columns:minmax(120px,max-content) minmax(0,1fr);gap:10px 24px;margin:0}
+.m-dl dt{color:var(--mute);font-size:.92rem}
+.m-dl dd{margin:0;overflow-wrap:anywhere}
+.m-gal{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:12px}
+.m-gal div{aspect-ratio:4/3;max-width:100%;border:1px dashed var(--line-hi);border-radius:10px;display:grid;place-items:center;color:var(--mute);font-size:.85rem;background:var(--bg-2);text-align:center;padding:8px}
+.m-act{display:flex;flex-wrap:wrap;gap:12px}
+@keyframes mfade{from{opacity:0}to{opacity:1}}
+@keyframes mrise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@media(max-width:480px){.m-meta div,.m-meta div+div{padding:12px 0;border-left:0}.m-meta div+div{border-top:1px solid var(--line)}}
+
+/* contact */
+.ct{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(28px,6vw,80px);align-items:start}
+.info{display:grid;gap:0}
+.info div{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;align-items:center;padding-block:20px;border-top:1px solid var(--line)}
+.info div:last-child{border-bottom:1px solid var(--line)}
+.info small{grid-column:1/-1;color:var(--mute);font-size:.82rem}
+.info b{font:600 1.1rem var(--f-b);overflow-wrap:anywhere}
+.copy{font:500 .82rem var(--f-b);padding:7px 13px;border-radius:999px;border:1px solid var(--line-hi);background:transparent;color:var(--white);cursor:pointer}
+.copy:hover{border-color:var(--blue-hi)}
+form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.f{display:grid;gap:8px}
+.f.full{grid-column:1/-1}
+.f label{font-weight:500;font-size:.92rem}
+input[type=text],input[type=email],input[type=tel],textarea,select.fs{width:100%;padding:13px 14px;background:var(--bg);color:var(--white);border:1px solid var(--line-hi);border-radius:8px;font:400 1rem var(--f-b)}
+textarea{min-height:150px;resize:vertical}
+input::placeholder,textarea::placeholder{color:#5F6C85}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--glow);outline-offset:1px;border-color:var(--glow)}
+#fmsg{min-height:1.4em;font-size:.92rem;color:var(--glow)}
+@media(max-width:600px){form{grid-template-columns:minmax(0,1fr)}.ct{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:860px){.ct{grid-template-columns:minmax(0,1fr)}}
+
+/* footer */
+.ft{border-top:1px solid var(--line);background:var(--bg)}
+.ft-in{display:flex;flex-wrap:wrap;gap:20px 40px;justify-content:space-between;align-items:center;padding-block:32px;color:var(--mute);font-size:.9rem}
+.ft ul{display:flex;flex-wrap:wrap;gap:6px 22px;list-style:none;margin:0;padding:0}
+.ft a{text-decoration:none}
+.ft a:hover{color:var(--white)}
+.ph-hint{color:var(--glow)}
+
+/* news */
+.nchip{font:500 .92rem var(--f-b);padding:10px 18px;border-radius:999px;border:1px solid var(--line-hi);background:transparent;color:var(--mute);cursor:pointer;transition:all .2s}
+.nchip:hover{color:var(--white);border-color:var(--blue-hi)}
+.nchip[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+.nmeta{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.85rem;color:var(--mute)}
+.nmeta span:first-child{color:var(--glow);font-weight:600}
+.feat{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);border:1px solid var(--line-hi);border-radius:16px;overflow:hidden;background:var(--panel);cursor:pointer;transition:border-color .25s;box-shadow:0 30px 80px -50px rgba(37,99,255,.6)}
+.feat:hover{border-color:var(--blue-hi)}
+.feat .thumb{aspect-ratio:auto;min-height:300px;border-bottom:0;border-right:1px solid var(--line)}
+.feat-b{padding:clamp(22px,4vw,44px);display:grid;gap:16px;align-content:center}
+.feat-b h2{font-size:clamp(1.5rem,3vw,2.3rem)}
+.feat-b p{color:var(--mute)}
+.pbody .nmeta{margin-bottom:2px}
+.pbody .ex{color:var(--mute);font-size:.95rem}
+@media(max-width:760px){.feat{grid-template-columns:minmax(0,1fr)}.feat .thumb{min-height:0;aspect-ratio:16/9;border-right:0;border-bottom:1px solid var(--line)}}
+@media(max-width:420px){.nav a{padding:8px 7px;font-size:.82rem}}
+
+/* language switch + first-visit picker */
+.lang{display:flex;gap:4px;padding:3px;border:1px solid var(--line-hi);border-radius:999px}
+.lang button{font:600 .8rem var(--f-b);padding:6px 12px;border-radius:999px;border:0;background:transparent;color:var(--mute);cursor:pointer;transition:background .2s,color .2s}
+.lang button:hover{color:var(--white)}
+.lang button[aria-pressed="true"]{background:var(--blue);color:#fff}
+@media(max-width:560px){.hd-in nav{order:3;width:100%}.lang{order:2}}
+.ls{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;
+  padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
+  background:radial-gradient(60% 60% at 80% 10%,rgba(37,99,255,.38),transparent 70%),radial-gradient(50% 50% at 10% 90%,rgba(37,99,255,.16),transparent 70%),#04060A;animation:mfade .3s ease}
+.ls-in{width:100%;max-width:520px;display:grid;gap:28px;justify-items:start}
+.ls-in h2{font-size:clamp(2rem,6vw,3.2rem);font-weight:800;letter-spacing:-.03em;line-height:1.05}
+.ls-in h2 span{display:block;color:var(--mute);font-weight:600}
+.ls-btns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;width:100%}
+.ls-btns button{font:700 1.3rem var(--f-d);padding:22px 16px;border-radius:14px;border:1px solid var(--line-hi);background:var(--panel);color:var(--white);cursor:pointer;transition:border-color .2s,background .2s}
+.ls-btns button:hover{border-color:var(--blue-hi);background:rgba(37,99,255,.18)}
+
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important;animation:none!important}}
+</style>
+
+<header class="hd">
+  <div class="w hd-in">
+    <a class="brand" href="#acasa" data-go="acasa" aria-label="RSA Telcom Group, pagina de start">
+      <svg width="38" height="38" viewBox="0 0 38 38" fill="none" aria-hidden="true">
+        <rect x="1" y="1" width="36" height="36" rx="9" fill="#0A111D" stroke="#24396A"/>
+        <path d="M8 19h8c4 0 4-7 9-7h5M16 19c4 0 4 7 9 7h5" stroke="#5B93FF" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="8" cy="19" r="2.6" fill="#fff"/><circle cx="30" cy="12" r="2.6" fill="#2563FF"/><circle cx="30" cy="26" r="2.6" fill="#2563FF"/>
+      </svg>
+      <div><b>RSA</b><span>Telcom Group</span></div>
+    </a>
+    <nav aria-label="Navigare principală">
+      <ul class="nav">
+        <li><a href="#acasa" data-go="acasa">Acasă</a></li>
+        <li><a href="#despre" data-go="despre">Despre noi</a></li>
+        <li><a href="#portofoliu" data-go="portofoliu">Portofoliu</a></li>
+        <li><a href="#noutati" data-go="noutati">Noutăți</a></li>
+        <li><a href="#contact" data-go="contact">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="lang" role="group" aria-label="Limbă">
+      <button type="button" data-lang="ro" aria-pressed="true">RO</button>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ ACASĂ ============ -->
+<main id="p-acasa" class="page">
+  <section class="hero">
+    <div class="w">
+      <h1>Rețele de fibră optică, proiectate până la ultimul abonat.</h1>
+      <p class="lead">RSA Telcom Group proiectează rețele FTTH pentru operatori, primării și dezvoltatori imobiliari: de la studiul de teren și alegerea traseelor, până la documentația completă și recepția rețelei.</p>
+      <div class="cta-row">
+        <a class="btn btn-p" href="#portofoliu" data-go="portofoliu">Vezi portofoliul</a>
+        <a class="btn btn-o" href="#contact" data-go="contact">Cere o ofertă</a>
+      </div>
+    </div>
+    <div class="netwrap">
+      <canvas id="net" role="img" aria-label="Animație cu o rețea FTTH: semnalul pleacă din OLT, trece prin FDT și FAT și ajunge la abonații ONT"></canvas>
+    </div>
+    <div class="w legend">
+      <span><i class="dn"></i>1490 nm, descendent (spre abonat)</span>
+      <span><i class="up"></i>1310 nm, ascendent (spre OLT)</span>
+      <span>Arhitectură punct-multipunct (PON)</span>
+    </div>
+  </section>
+
+  <div class="w">
+    <div class="specs">
+      <div class="spec"><b>GPON</b><span>ITU-T G.984</span></div>
+      <div class="spec"><b>G.652.D</b><span>fibră monomod standard</span></div>
+      <div class="spec"><b>1310 / 1490 / 1550 nm</b><span>lungimile de undă ale rețelei</span></div>
+      <div class="spec"><b>28 dB</b><span>buget optic maxim, clasa B+</span></div>
+    </div>
+  </div>
+
+  <section class="sec">
+    <div class="w svc">
+      <div class="svc-head">
+        <h2>Tot ce intră într-un proiect FTTH.</h2>
+        <p class="lead">Lucrăm pe tot lanțul de proiectare, ca să primești o documentație pe care echipele de execuție o pot folosi fără întrebări în plus.</p>
+        <div><a class="btn btn-o" href="#despre" data-go="despre">Despre noi</a></div>
+      </div>
+      <div class="rows">
+        <article class="row">
+          <svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="8" cy="22" r="3.5"/><path d="M11.5 22h8c5 0 5-10 11-10M19.5 22c5 0 5 10 11 10"/><circle cx="35" cy="12" r="3.5"/><circle cx="35" cy="32" r="3.5"/></svg>
+          <div><h3>Proiectare rețele FTTH / GPON</h3><p>Arhitectura rețelei, dimensionarea fibrei și a splitterelor, schema de distribuție de la OLT până la abonat și calculul bugetului optic.</p></div>
+        </article>
+        <article class="row">
+          <svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 36 18 8l8 16 4-8 8 20"/><circle cx="18" cy="8" r="2.5"/></svg>
+          <div><h3>Studii de teren și trasee</h3><p>Releveu, analiza infrastructurii existente (canalizație, stâlpi, conducte) și alegerea traseelor cu cele mai puține intersecții și restricții.</p></div>
+        </article>
+        <article class="row">
+          <svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5h16l8 8v26H11z"/><path d="M27 5v8h8M16 22h14M16 28h14M16 34h8"/></svg>
+          <div><h3>Documentație pentru avize și autorizații</h3><p>Planuri, memorii tehnice și piese desenate pregătite pentru avizatori și pentru autoritățile locale.</p></div>
+        </article>
+        <article class="row">
+          <svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 30c4-12 10-16 17-16s13 4 17 16"/><path d="M22 14v10l7 4"/><circle cx="22" cy="30" r="2.5"/></svg>
+          <div><h3>Asistență în execuție și recepție</h3><p>Suport pentru echipele de montaj, verificarea măsurătorilor OTDR și predarea documentației as-built.</p></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec proc">
+    <div class="w">
+      <h2>Cum decurge un proiect.</h2>
+      <ol class="steps">
+        <li class="step"><small>Pasul 1</small><h3>Studiu de teren</h3><p>Vizită pe amplasament, releveu și inventarul infrastructurii existente.</p></li>
+        <li class="step"><small>Pasul 2</small><h3>Arhitectura rețelei</h3><p>Poziția OLT, FDT și FAT, raporturile de split și bugetul optic.</p></li>
+        <li class="step"><small>Pasul 3</small><h3>Proiect tehnic</h3><p>Planuri de situație, scheme de fibre, liste de cantități.</p></li>
+        <li class="step"><small>Pasul 4</small><h3>Avize și autorizații</h3><p>Dosarele complete, depuse la instituțiile și proprietarii de rețele implicați.</p></li>
+        <li class="step"><small>Pasul 5</small><h3>Asistență la execuție</h3><p>Clarificări de proiect și modificări rapide când apar situații pe teren.</p></li>
+        <li class="step"><small>Pasul 6</small><h3>Recepție și as-built</h3><p>Verificarea măsurătorilor și predarea documentației finale.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="w calc">
+      <div style="display:grid;gap:18px">
+        <h2>Încape rețeaua ta în bugetul optic?</h2>
+        <p class="lead">Un calcul rapid pentru o legătură OLT–abonat. La proiect facem calculul detaliat, pe fiecare ramură a rețelei.</p>
+      </div>
+      <div class="panel">
+        <div class="ctl"><label for="c-km">Distanța OLT–abonat <output id="o-km">6 km</output></label><input id="c-km" type="range" min="0.5" max="20" step="0.5" value="6"></div>
+        <div class="ctl"><label for="c-sp">Raport de split total</label>
+          <select id="c-sp"><option value="10.5">1:8</option><option value="13.8">1:16</option><option value="17.4" selected>1:32</option><option value="21">1:64</option></select></div>
+        <div class="ctl"><label for="c-cn">Perechi de conectori <output id="o-cn">4</output></label><input id="c-cn" type="range" min="2" max="10" step="1" value="4"></div>
+        <div class="res" aria-live="polite">
+          <div class="res-top"><strong id="r-tot">22,3 dB</strong><span id="r-pill" class="pill ok">În buget</span></div>
+          <div><div class="bar"><i id="r-bar"></i></div><div class="bar-lim"><span></span></div>
+          <div class="bar-cap"><span>0 dB</span><span>limită 28 dB</span></div></div>
+          <dl class="bd" id="r-bd"></dl>
+          <p class="note">Valori orientative: fibră 0,35 dB/km, conector 0,5 dB, îmbinare 0,1 dB la fiecare 2 km.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band sec">
+    <div class="w band-in">
+      <h2>Ai o zonă de acoperit cu fibră?</h2>
+      <a class="btn btn-p" href="#contact" data-go="contact">Scrie-ne despre proiect</a>
+    </div>
+  </section>
+</main>
+
+<!-- ============ DESPRE NOI ============ -->
+<main id="p-despre" class="page" hidden>
+  <section class="ph"><div class="w">
+    <h1>Despre RSA Telcom Group</h1>
+    <p class="lead">Firmă de proiectare specializată în rețele de telecomunicații în fibră optică (FTTH).</p>
+  </div></section>
+
+  <section class="sec" style="padding-top:clamp(24px,4vw,40px)">
+    <div class="w two">
+      <div>
+        <p>Proiectăm rețele FTTH din <span class="ph-hint">[anul înființării]</span>, pentru operatori de telecomunicații, administrații locale și dezvoltatori. <span class="ph-hint">[Scrie aici povestea firmei: cum a început, ce vă diferențiază.]</span></p>
+      </div>
+      <div>
+        <p><span class="ph-hint">[Al doilea paragraf: tipul de proiecte, zonele în care lucrați, numărul de specialiști.]</span></p>
+        <p><span class="ph-hint">[Al treilea paragraf: modul de lucru cu clienții și cu echipele de execuție.]</span></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec proc">
+    <div class="w">
+      <h2>Cum lucrăm.</h2>
+      <div class="vals" style="margin-top:36px">
+        <div class="val"><h3>Documentație exactă</h3><p>Fiecare plan și fiecare schemă de fibre sunt verificate înainte de predare.</p></div>
+        <div class="val"><h3>Respectarea normativelor</h3><p>Proiectăm conform standardelor de telecomunicații și cerințelor avizatorilor.</p></div>
+        <div class="val"><h3>Răspuns rapid</h3><p>Rămânem la dispoziția echipelor de execuție pe toată durata lucrării.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="w">
+      <h2>Echipa</h2>
+      <div class="team">
+        <article class="person"><div class="av">NP</div><div><h3 class="ph-hint">[Nume Prenume]</h3><p class="ph-hint">[Funcție, ex. Director proiectare]</p></div></article>
+        <article class="person"><div class="av">NP</div><div><h3 class="ph-hint">[Nume Prenume]</h3><p class="ph-hint">[Funcție, ex. Inginer proiectant]</p></div></article>
+        <article class="person"><div class="av">NP</div><div><h3 class="ph-hint">[Nume Prenume]</h3><p class="ph-hint">[Funcție, ex. Specialist avizări]</p></div></article>
+      </div>
+      <div class="tags" aria-label="Atestări și autorizări">
+        <span class="tag">[Atestare / autorizare 1]</span><span class="tag">[Atestare / autorizare 2]</span><span class="tag">[Certificare ISO]</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="band sec"><div class="w band-in">
+    <h2>Hai să discutăm despre proiectul tău.</h2>
+    <a class="btn btn-p" href="#contact" data-go="contact">Contact</a>
+  </div></section>
+</main>
+
+<!-- ============ PORTOFOLIU ============ -->
+<main id="p-portofoliu" class="page" hidden>
+  <section class="ph"><div class="w">
+    <h1>Portofoliu</h1>
+    <p class="lead">Rețele FTTH proiectate de echipa noastră. Înlocuiește datele de mai jos cu proiectele tale.</p>
+  </div></section>
+
+  <section class="sec" style="padding-top:clamp(24px,4vw,40px)">
+    <div class="w">
+      <div class="filters" role="group" aria-label="Filtrează proiectele">
+        <button class="chip" type="button" data-f="all" aria-pressed="true">Toate</button>
+        <button class="chip" type="button" data-f="urban" aria-pressed="false">Urban</button>
+        <button class="chip" type="button" data-f="rural" aria-pressed="false">Rural</button>
+        <button class="chip" type="button" data-f="blocuri" aria-pressed="false">Ansambluri rezidențiale</button>
+      </div>
+      <div class="grid" id="grid"></div>
+    </div>
+  </section>
+</main>
+
+<!-- ============ NOUTĂȚI ============ -->
+<main id="p-noutati" class="page" hidden>
+  <section class="ph"><div class="w">
+    <h1>Noutăți</h1>
+    <p class="lead">Noutăți din domeniul telecomunicațiilor și al rețelelor în fibră optică.</p>
+  </div></section>
+
+  <section class="sec" style="padding-top:clamp(24px,4vw,40px)">
+    <div class="w">
+      <div id="nfeat"></div>
+      <div class="filters" role="group" aria-label="Filtrează știrile" style="margin-top:48px">
+        <button class="nchip" type="button" data-nf="all" aria-pressed="true">Toate</button>
+        <button class="nchip" type="button" data-nf="industrie" aria-pressed="false">Industrie</button>
+        <button class="nchip" type="button" data-nf="reglementari" aria-pressed="false">Reglementări</button>
+        <button class="nchip" type="button" data-nf="tehnologie" aria-pressed="false">Tehnologie</button>
+        <button class="nchip" type="button" data-nf="companie" aria-pressed="false">Companie</button>
+      </div>
+      <div class="grid" id="ngrid"></div>
+    </div>
+  </section>
+</main>
+
+<!-- ============ CONTACT ============ -->
+<main id="p-contact" class="page" hidden>
+  <section class="ph"><div class="w">
+    <h1>Contact</h1>
+    <p class="lead">Spune-ne unde vrei să ajungă fibra optică și revenim cu o ofertă de proiectare.</p>
+  </div></section>
+
+  <section class="sec" style="padding-top:clamp(24px,4vw,40px)">
+    <div class="w ct">
+      <div class="info">
+        <div><small>E-mail</small><b id="i-mail">[contact@rsatelcom.ro]</b><button class="copy" type="button" data-copy="i-mail">Copiază</button></div>
+        <div><small>Telefon</small><b id="i-tel">[+40 7xx xxx xxx]</b><button class="copy" type="button" data-copy="i-tel">Copiază</button></div>
+        <div><small>Sediu</small><b id="i-adr">[Strada, număr, oraș, județ]</b><button class="copy" type="button" data-copy="i-adr">Copiază</button></div>
+        <div><small>Program</small><b>[Luni–Vineri, 09:00–17:00]</b></div>
+      </div>
+      <form id="cform" novalidate>
+        <div class="f"><label for="f-n">Nume</label><input id="f-n" type="text" autocomplete="name" placeholder="Nume și prenume"></div>
+        <div class="f"><label for="f-e">E-mail</label><input id="f-e" type="email" autocomplete="email" placeholder="adresa@firma.ro"></div>
+        <div class="f"><label for="f-t">Telefon</label><input id="f-t" type="tel" autocomplete="tel" placeholder="07xx xxx xxx"></div>
+        <div class="f"><label for="f-z">Zona proiectului</label><input id="f-z" type="text" placeholder="Localitate, județ"></div>
+        <div class="f full"><label for="f-s">Tipul solicitării</label>
+          <select id="f-s" class="fs"><option>Proiect FTTH nou</option><option>Extindere de rețea existentă</option><option>Verificarea unui proiect existent</option><option>Altceva</option></select></div>
+        <div class="f full"><label for="f-m">Mesaj</label><textarea id="f-m" placeholder="Descrie pe scurt zona și numărul estimat de abonați."></textarea></div>
+        <div class="f full"><button class="btn btn-p" type="submit" style="justify-self:start">Trimite mesajul</button><p id="fmsg" role="status"></p></div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<div class="md" id="nmodal" hidden>
+  <div class="md-card" role="dialog" aria-modal="true" aria-labelledby="n-t">
+    <button class="m-x" type="button" data-nclose aria-label="Închide fereastra">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 3l10 10M13 3 3 13"/></svg>
+    </button>
+    <div id="n-body"></div>
+  </div>
+</div>
+
+<div class="ls" id="ls" role="dialog" aria-modal="true" aria-labelledby="ls-t" hidden>
+  <div class="ls-in">
+    <svg width="54" height="54" viewBox="0 0 38 38" fill="none" aria-hidden="true">
+      <rect x="1" y="1" width="36" height="36" rx="9" fill="#0A111D" stroke="#24396A"/>
+      <path d="M8 19h8c4 0 4-7 9-7h5M16 19c4 0 4 7 9 7h5" stroke="#5B93FF" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="8" cy="19" r="2.6" fill="#fff"/><circle cx="30" cy="12" r="2.6" fill="#2563FF"/><circle cx="30" cy="26" r="2.6" fill="#2563FF"/>
+    </svg>
+    <h2 id="ls-t">Alege limba<span>Choose your language</span></h2>
+    <div class="ls-btns">
+      <button type="button" data-lang="ro">Română</button>
+      <button type="button" data-lang="en">English</button>
+    </div>
+  </div>
+</div>
+
+<div class="md" id="modal" hidden>
+  <div class="md-card" role="dialog" aria-modal="true" aria-labelledby="m-t">
+    <button class="m-x" type="button" data-close aria-label="Închide fereastra">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 3l10 10M13 3 3 13"/></svg>
+    </button>
+    <div id="m-body"></div>
+  </div>
+</div>
+
+<footer class="ft">
+  <div class="w ft-in">
+    <span>© 2026 RSA Telcom Group. Toate drepturile rezervate.</span>
+    <ul>
+      <li><a href="#acasa" data-go="acasa">Acasă</a></li>
+      <li><a href="#despre" data-go="despre">Despre noi</a></li>
+      <li><a href="#portofoliu" data-go="portofoliu">Portofoliu</a></li>
+      <li><a href="#noutati" data-go="noutati">Noutăți</a></li>
+      <li><a href="#contact" data-go="contact">Contact</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var pages=['acasa','despre','portofoliu','noutati','contact'];
+  var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- language (RO / EN) ---------- */
+  var EN={
+    "Acasă":"Home","Despre noi":"About us","Portofoliu":"Portfolio","Contact":"Contact","Noutăți":"News",
+    "Noutăți din domeniul telecomunicațiilor și al rețelelor în fibră optică.":"News from telecommunications and fiber-optic networks.",
+    "Industrie":"Industry","Reglementări":"Regulations","Tehnologie":"Technology","Companie":"Company","Filtrează știrile":"Filter news",
+    "[ZZ.LL.AAAA]":"[DD.MM.YYYY]","Știre principală":"Top story","Citește mai mult":"Read more","Deschide știrea":"Open story:",
+    "[Titlul știrii 1]":"[News headline 1]","[Titlul știrii 2]":"[News headline 2]","[Titlul știrii 3]":"[News headline 3]","[Titlul știrii 4]":"[News headline 4]","[Titlul știrii 5]":"[News headline 5]","[Titlul știrii 6]":"[News headline 6]",
+    "[Rezumatul știrii în una sau două propoziții.]":"[Summary of the story in one or two sentences.]",
+    "[Textul complet al știrii: scrie sau lipește aici articolul.]":"[Full text of the story: write or paste the article here.]",
+    "Sursa:":"Source:","[Numele sursei sau linkul articolului]":"[Source name or article link]",
+    "Ai o întrebare despre acest subiect?":"Have a question about this topic?","Contactează-ne":"Contact us",
+    "Rețele de fibră optică, proiectate până la ultimul abonat.":"Fiber-optic networks, designed all the way to the last subscriber.",
+    "RSA Telcom Group proiectează rețele FTTH pentru operatori, primării și dezvoltatori imobiliari: de la studiul de teren și alegerea traseelor, până la documentația completă și recepția rețelei.":"RSA Telcom Group designs FTTH networks for operators, municipalities and real-estate developers: from the site survey and route selection to the complete documentation and network acceptance.",
+    "Vezi portofoliul":"View portfolio","Cere o ofertă":"Request a quote",
+    "1490 nm, descendent (spre abonat)":"1490 nm, downstream (to the subscriber)",
+    "1310 nm, ascendent (spre OLT)":"1310 nm, upstream (to the OLT)",
+    "Arhitectură punct-multipunct (PON)":"Point-to-multipoint architecture (PON)",
+    "fibră monomod standard":"standard single-mode fiber","lungimile de undă ale rețelei":"network wavelengths","buget optic maxim, clasa B+":"maximum optical budget, class B+",
+    "Tot ce intră într-un proiect FTTH.":"Everything that goes into an FTTH project.",
+    "Lucrăm pe tot lanțul de proiectare, ca să primești o documentație pe care echipele de execuție o pot folosi fără întrebări în plus.":"We cover the whole design chain, so you get documentation that construction crews can use without extra questions.",
+    "Proiectare rețele FTTH / GPON":"FTTH / GPON network design",
+    "Arhitectura rețelei, dimensionarea fibrei și a splitterelor, schema de distribuție de la OLT până la abonat și calculul bugetului optic.":"Network architecture, fiber and splitter sizing, the distribution scheme from the OLT to the subscriber and the optical budget calculation.",
+    "Studii de teren și trasee":"Site surveys and routes",
+    "Releveu, analiza infrastructurii existente (canalizație, stâlpi, conducte) și alegerea traseelor cu cele mai puține intersecții și restricții.":"Surveying, analysis of existing infrastructure (ducts, poles, conduits) and selection of the routes with the fewest crossings and restrictions.",
+    "Documentație pentru avize și autorizații":"Documentation for permits and approvals",
+    "Planuri, memorii tehnice și piese desenate pregătite pentru avizatori și pentru autoritățile locale.":"Plans, technical reports and drawings prepared for approving bodies and local authorities.",
+    "Asistență în execuție și recepție":"Construction and acceptance support",
+    "Suport pentru echipele de montaj, verificarea măsurătorilor OTDR și predarea documentației as-built.":"Support for installation crews, review of OTDR measurements and handover of the as-built documentation.",
+    "Cum decurge un proiect.":"How a project runs.",
+    "Pasul 1":"Step 1","Pasul 2":"Step 2","Pasul 3":"Step 3","Pasul 4":"Step 4","Pasul 5":"Step 5","Pasul 6":"Step 6",
+    "Studiu de teren":"Site survey","Vizită pe amplasament, releveu și inventarul infrastructurii existente.":"Site visit, survey and inventory of the existing infrastructure.",
+    "Arhitectura rețelei":"Network architecture","Poziția OLT, FDT și FAT, raporturile de split și bugetul optic.":"OLT, FDT and FAT locations, split ratios and the optical budget.",
+    "Proiect tehnic":"Technical design","Planuri de situație, scheme de fibre, liste de cantități.":"Site plans, fiber diagrams and bills of quantities.",
+    "Avize și autorizații":"Permits and approvals","Dosarele complete, depuse la instituțiile și proprietarii de rețele implicați.":"Complete files submitted to the institutions and network owners involved.",
+    "Asistență la execuție":"Construction support","Clarificări de proiect și modificări rapide când apar situații pe teren.":"Design clarifications and quick changes when issues come up on site.",
+    "Recepție și as-built":"Acceptance and as-built","Verificarea măsurătorilor și predarea documentației finale.":"Measurement checks and handover of the final documentation.",
+    "Încape rețeaua ta în bugetul optic?":"Does your network fit the optical budget?",
+    "Un calcul rapid pentru o legătură OLT–abonat. La proiect facem calculul detaliat, pe fiecare ramură a rețelei.":"A quick estimate for one OLT-to-subscriber link. In a project we do the detailed calculation for every branch of the network.",
+    "Distanța OLT–abonat":"Distance OLT to subscriber","Raport de split total":"Total split ratio","Perechi de conectori":"Connector pairs",
+    "limită 28 dB":"limit 28 dB",
+    "Valori orientative: fibră 0,35 dB/km, conector 0,5 dB, îmbinare 0,1 dB la fiecare 2 km.":"Approximate values: fiber 0.35 dB/km, connector 0.5 dB, splice 0.1 dB every 2 km.",
+    "Ai o zonă de acoperit cu fibră?":"Need an area covered with fiber?","Scrie-ne despre proiect":"Tell us about your project",
+    "Despre RSA Telcom Group":"About RSA Telcom Group",
+    "Firmă de proiectare specializată în rețele de telecomunicații în fibră optică (FTTH).":"Design firm specializing in fiber-optic (FTTH) telecommunications networks.",
+    "Proiectăm rețele FTTH din":"We have been designing FTTH networks since",
+    ", pentru operatori de telecomunicații, administrații locale și dezvoltatori.":", for telecom operators, local authorities and developers.",
+    "[anul înființării]":"[year founded]",
+    "[Scrie aici povestea firmei: cum a început, ce vă diferențiază.]":"[Write the company story here: how it started and what sets you apart.]",
+    "[Al doilea paragraf: tipul de proiecte, zonele în care lucrați, numărul de specialiști.]":"[Second paragraph: types of projects, areas you work in, number of specialists.]",
+    "[Al treilea paragraf: modul de lucru cu clienții și cu echipele de execuție.]":"[Third paragraph: how you work with clients and construction crews.]",
+    "Cum lucrăm.":"How we work.",
+    "Documentație exactă":"Accurate documentation","Fiecare plan și fiecare schemă de fibre sunt verificate înainte de predare.":"Every plan and every fiber diagram is checked before handover.",
+    "Respectarea normativelor":"Compliance with regulations","Proiectăm conform standardelor de telecomunicații și cerințelor avizatorilor.":"We design to telecom standards and the requirements of approving bodies.",
+    "Răspuns rapid":"Fast response","Rămânem la dispoziția echipelor de execuție pe toată durata lucrării.":"We stay available to the construction crews throughout the works.",
+    "Echipa":"Team","[Nume Prenume]":"[First Last]",
+    "[Funcție, ex. Director proiectare]":"[Role, e.g. Head of design]","[Funcție, ex. Inginer proiectant]":"[Role, e.g. Design engineer]","[Funcție, ex. Specialist avizări]":"[Role, e.g. Permitting specialist]",
+    "[Atestare / autorizare 1]":"[Certification / authorization 1]","[Atestare / autorizare 2]":"[Certification / authorization 2]","[Certificare ISO]":"[ISO certification]",
+    "Hai să discutăm despre proiectul tău.":"Let's talk about your project.",
+    "Rețele FTTH proiectate de echipa noastră. Înlocuiește datele de mai jos cu proiectele tale.":"FTTH networks designed by our team. Replace the data below with your own projects.",
+    "Toate":"All","Urban":"Urban","Rural":"Rural","Ansambluri rezidențiale":"Residential complexes","Ansamblu rezidențial":"Residential complex",
+    "Spune-ne unde vrei să ajungă fibra optică și revenim cu o ofertă de proiectare.":"Tell us where you want fiber to reach and we will get back to you with a design quote.",
+    "Telefon":"Phone","Sediu":"Address","Program":"Hours",
+    "[Strada, număr, oraș, județ]":"[Street, number, city, county]","[Luni–Vineri, 09:00–17:00]":"[Monday to Friday, 09:00–17:00]",
+    "Copiază":"Copy","Copiat":"Copied",
+    "Nume":"Name","Zona proiectului":"Project area","Tipul solicitării":"Request type","Mesaj":"Message",
+    "Proiect FTTH nou":"New FTTH project","Extindere de rețea existentă":"Extension of an existing network","Verificarea unui proiect existent":"Review of an existing design","Altceva":"Something else",
+    "Trimite mesajul":"Send message",
+    "© 2026 RSA Telcom Group. Toate drepturile rezervate.":"© 2026 RSA Telcom Group. All rights reserved.",
+    "RSA Telcom Group, pagina de start":"RSA Telcom Group, home page","Navigare principală":"Main navigation","Limbă":"Language",
+    "Animație cu o rețea FTTH: semnalul pleacă din OLT, trece prin FDT și FAT și ajunge la abonații ONT":"Animation of an FTTH network: the signal leaves the OLT, passes through the FDT and FAT and reaches the ONT subscribers",
+    "Filtrează proiectele":"Filter projects","Atestări și autorizări":"Certifications and authorizations","Închide fereastra":"Close window",
+    "Nume și prenume":"Full name","adresa@firma.ro":"name@company.com","Localitate, județ":"Town, county",
+    "Descrie pe scurt zona și numărul estimat de abonați.":"Briefly describe the area and the estimated number of subscribers.",
+    "FDT, distribuție":"FDT, distribution","FAT, acces":"FAT, access","ONT, abonat":"ONT, subscriber","Nod central":"Central node",
+    "Peste buget cu":"Over budget by","La limită, rezervă":"Near the limit, margin","În buget, rezervă":"Within budget, margin",
+    "Fibră":"Fiber","Conectori":"Connectors","Îmbinări":"Splices",
+    "[Nume proiect 1]":"[Project name 1]","[Nume proiect 2]":"[Project name 2]","[Nume proiect 3]":"[Project name 3]","[Nume proiect 4]":"[Project name 4]","[Nume proiect 5]":"[Project name 5]","[Nume proiect 6]":"[Project name 6]",
+    "fibră proiectată":"fiber designed","abonați":"subscribers","anul":"year","Vezi detalii":"View details","Deschide detaliile proiectului":"Open project details:",
+    "anul proiectului":"project year","Despre proiect":"About the project",
+    "[Descrie proiectul: ce s-a cerut, ce zonă acoperă, ce provocări au apărut și cum le-ați rezolvat.]":"[Describe the project: what was requested, what area it covers, what challenges came up and how you solved them.]",
+    "Detalii tehnice":"Technical details","Beneficiar":"Client","[Nume beneficiar]":"[Client name]","Tip de rețea":"Network type","[ex. FTTH, GPON]":"[e.g. FTTH, GPON]",
+    "Arhitectură":"Architecture","[ex. split 1:32, număr de FDT / FAT]":"[e.g. 1:32 split, number of FDT / FAT]",
+    "Servicii prestate":"Services provided","[ex. studiu de teren, proiect tehnic, avize, asistență la execuție]":"[e.g. site survey, technical design, permits, construction support]",
+    "Galerie":"Gallery","[Fotografie sau plan 1]":"[Photo or plan 1]","[Fotografie sau plan 2]":"[Photo or plan 2]","[Fotografie sau plan 3]":"[Photo or plan 3]",
+    "Discută un proiect similar":"Discuss a similar project","Închide":"Close",
+    "Completează numele și o adresă de e-mail validă.":"Enter your name and a valid email address.",
+    "Formularul este un exemplu și nu trimite încă mesaje. Conectează-l la adresa ta de e-mail.":"This form is a sample and does not send messages yet. Connect it to your email address."
+  };
+  var cur='ro',onLang=[];
+  var DYN={'o-km':1,'o-cn':1,'r-tot':1,'r-pill':1,'r-bd':1,'grid':1,'m-body':1,'fmsg':1,'ls':1,'nfeat':1,'ngrid':1,'n-body':1};
+  function t(k){return cur==='en'&&EN[k]!==undefined?EN[k]:k}
+  function isDyn(n){for(var p=n.parentNode;p&&p!==document.body;p=p.parentNode){if(p.id&&DYN[p.id])return true}return false}
+  function applyStatic(){
+    var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,null),n,list=[];
+    while((n=w.nextNode()))list.push(n);
+    list.forEach(function(n){
+      var pn=n.parentNode&&n.parentNode.nodeName;
+      if(pn==='SCRIPT'||pn==='STYLE'||isDyn(n))return;
+      if(n._ro===undefined)n._ro=n.nodeValue;
+      var key=n._ro.trim();
+      n.nodeValue=(cur==='en'&&EN[key]!==undefined)?n._ro.replace(key,function(){return EN[key]}):n._ro;
+    });
+    document.querySelectorAll('[aria-label],[placeholder]').forEach(function(el){
+      if(el.closest&&el.closest('#grid,#m-body,#ls,#nfeat,#ngrid,#n-body'))return;
+      ['aria-label','placeholder'].forEach(function(a){
+        if(!el.hasAttribute(a))return;
+        var k='_ro_'+a;if(el[k]===undefined)el[k]=el.getAttribute(a);
+        el.setAttribute(a,(cur==='en'&&EN[el[k]]!==undefined)?EN[el[k]]:el[k]);
+      });
+    });
+  }
+  function setLang(l,persist){
+    cur=(l==='en')?'en':'ro';
+    document.documentElement.lang=cur;
+    document.querySelectorAll('.lang [data-lang]').forEach(function(b){b.setAttribute('aria-pressed',b.getAttribute('data-lang')===cur?'true':'false')});
+    applyStatic();
+    onLang.forEach(function(fn){fn()});
+    if(persist){try{localStorage.setItem('rsa-lang',cur)}catch(_){}}
+  }
+  document.addEventListener('click',function(e){
+    var b=e.target.closest&&e.target.closest('[data-lang]');
+    if(!b)return;
+    setLang(b.getAttribute('data-lang'),true);
+    document.getElementById('ls').hidden=true;
+    document.body.style.overflow='';
+  });
+
+  /* ---------- routing ---------- */
+  function show(h){
+    if(pages.indexOf(h)<0)h='acasa';
+    pages.forEach(function(p){document.getElementById('p-'+p).hidden=(p!==h)});
+    document.querySelectorAll('.nav a').forEach(function(a){
+      if(a.getAttribute('data-go')===h)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');
+    });
+    window.scrollTo(0,0);
+    if(h==='acasa'){net.start()}else{net.stop()}
+  }
+  document.addEventListener('click',function(e){
+    var a=e.target.closest&&e.target.closest('[data-go]');
+    if(!a)return;
+    e.preventDefault();
+    var h=a.getAttribute('data-go');
+    try{location.hash=h}catch(_){}
+    show(h);
+  });
+  window.addEventListener('hashchange',function(){show(location.hash.replace('#',''))});
+
+  /* ---------- hero network canvas ---------- */
+  var net=(function(){
+    var cv=document.getElementById('net'),ctx=cv.getContext('2d');
+    var W=0,H=0,dpr=1,paths=[],edges=[],nodes=[],leaves=[],pulses=[],xs=[],narrow=false;
+    var running=false,last=0,tDown=0,tUp=0,raf=0;
+    function seeded(s){return function(){s=(s*16807)%2147483647;return s/2147483647}}
+    function build(){
+      var r=cv.getBoundingClientRect();
+      if(r.width<10||r.height<10)return false;
+      W=r.width;H=r.height;dpr=Math.min(window.devicePixelRatio||1,2);
+      cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);
+      narrow=W<620;
+      var rnd=seeded(11),nL1=4,nL2=2,nLeaf=narrow?2:4;
+      xs=[W*.11,W*.33,W*.58,W*.88];
+      var padT=H*.09,padB=H*.17,usable=H-padT-padB,total2=nL1*nL2;
+      nodes=[];edges=[];paths=[];leaves=[];pulses=[];
+      var root={x:xs[0],y:padT+usable/2,l:0};nodes.push(root);
+      for(var i=0;i<nL1;i++){
+        var n1={x:xs[1]+(rnd()-.5)*14,y:padT+usable*(i+.5)/nL1,l:1};nodes.push(n1);
+        var e0={a:root,b:n1,w:1.7};edges.push(e0);
+        for(var j=0;j<nL2;j++){
+          var idx=i*nL2+j;
+          var n2={x:xs[2]+(rnd()-.5)*22,y:padT+usable*(idx+.5)/total2,l:2};nodes.push(n2);
+          var e1={a:n1,b:n2,w:1.3};edges.push(e1);
+          for(var k=0;k<nLeaf;k++){
+            var spread=usable/total2*.78;
+            var n3={x:xs[3]+(rnd()-.5)*26,y:n2.y+((k+.5)/nLeaf-.5)*spread,l:3,g:0};nodes.push(n3);leaves.push(n3);
+            var e2={a:n2,b:n3,w:.9};edges.push(e2);
+            paths.push([e0,e1,e2]);
+          }
+        }
+      }
+      return true;
+    }
+    function bez(e,t){
+      var a=e.a,b=e.b,mx=(a.x+b.x)/2,u=1-t;
+      return {x:u*u*u*a.x+3*u*u*t*mx+3*u*t*t*mx+t*t*t*b.x,
+              y:u*u*u*a.y+3*u*u*t*a.y+3*u*t*t*b.y+t*t*t*b.y};
+    }
+    function pos(p,u){var n=p.length,i=Math.max(0,Math.min(n-1,Math.floor(u))),t=Math.max(0,Math.min(1,u-i));return bez(p[i],t)}
+    function spawn(dir){
+      if(pulses.length>46||!paths.length)return;
+      var p=paths[Math.floor(Math.random()*paths.length)];
+      pulses.push({p:p,u:dir>0?0:3,d:dir,s:(dir>0?.62:.5)+Math.random()*.2});
+    }
+    function seedPulses(){
+      for(var i=0;i<14;i++){spawn(i%3?1:-1);var q=pulses[pulses.length-1];if(q)q.u=Math.random()*3}
+    }
+    function update(dt){
+      tDown+=dt;tUp+=dt;
+      while(tDown>.24){tDown-=.24;spawn(1)}
+      while(tUp>.62){tUp-=.62;spawn(-1)}
+      for(var i=pulses.length-1;i>=0;i--){
+        var q=pulses[i];q.u+=q.d*q.s*dt;
+        if(q.d>0&&q.u>=3){q.p[2].b.g=1;pulses.splice(i,1)}
+        else if(q.d<0&&q.u<=0){pulses.splice(i,1)}
+      }
+      leaves.forEach(function(l){if(l.g>0)l.g=Math.max(0,l.g-dt*1.5)});
+    }
+    function glowDot(x,y,r,rgb,a){
+      var g=ctx.createRadialGradient(x,y,0,x,y,r*4);
+      g.addColorStop(0,'rgba('+rgb+','+a+')');g.addColorStop(1,'rgba('+rgb+',0)');
+      ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r*4,0,6.2832);ctx.fill();
+      ctx.fillStyle='rgba('+(rgb==='255,255,255'?'255,255,255':'200,224,255')+','+Math.min(1,a+.1)+')';
+      ctx.beginPath();ctx.arc(x,y,r,0,6.2832);ctx.fill();
+    }
+    function draw(){
+      if(!W)return;
+      ctx.clearRect(0,0,W,H);
+      ctx.lineCap='round';
+      edges.forEach(function(e){
+        var mx=(e.a.x+e.b.x)/2;
+        ctx.strokeStyle='rgba(91,147,255,.26)';ctx.lineWidth=e.w;
+        ctx.beginPath();ctx.moveTo(e.a.x,e.a.y);ctx.bezierCurveTo(mx,e.a.y,mx,e.b.y,e.b.x,e.b.y);ctx.stroke();
+      });
+      /* nodes */
+      nodes.forEach(function(n){
+        if(n.l===0)return;
+        if(n.l===3){
+          var g=n.g||0;
+          if(g>.03)glowDot(n.x,n.y,2.6+g*1.8,'141,187,255',.55*g);
+          ctx.fillStyle='rgba(141,187,255,'+(.4+.6*g)+')';
+          ctx.beginPath();ctx.arc(n.x,n.y,2.4,0,6.2832);ctx.fill();
+        }else{
+          var r=n.l===1?6:4.4;
+          ctx.fillStyle='#04060A';ctx.strokeStyle=n.l===1?'#8DBBFF':'#5B93FF';ctx.lineWidth=1.6;
+          ctx.beginPath();ctx.arc(n.x,n.y,r,0,6.2832);ctx.fill();ctx.stroke();
+        }
+      });
+      /* OLT */
+      var o=nodes[0],ow=narrow?44:60,oh=narrow?26:34;
+      ctx.shadowColor='rgba(91,147,255,.9)';ctx.shadowBlur=22;
+      ctx.fillStyle='#0A111D';ctx.strokeStyle='#5B93FF';ctx.lineWidth=1.6;
+      ctx.beginPath();
+      if(ctx.roundRect){ctx.roundRect(o.x-ow/2,o.y-oh/2,ow,oh,8)}else{ctx.rect(o.x-ow/2,o.y-oh/2,ow,oh)}
+      ctx.fill();ctx.stroke();ctx.shadowBlur=0;
+      ctx.fillStyle='#fff';ctx.font='700 '+(narrow?11:13)+'px "IBM Plex Sans",sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText('OLT',o.x,o.y+1);
+      /* pulses */
+      ctx.globalCompositeOperation='lighter';
+      pulses.forEach(function(q){
+        var down=q.d>0,rgb=down?'91,147,255':'255,255,255';
+        for(var i=11;i>=0;i--){
+          var uu=q.u-q.d*i*.045;
+          if(uu<0||uu>3)continue;
+          var pt=pos(q.p,uu),f=1-i/12;
+          ctx.fillStyle='rgba('+rgb+','+(f*(down?.55:.38))+')';
+          ctx.beginPath();ctx.arc(pt.x,pt.y,(down?3:2.4)*f+.4,0,6.2832);ctx.fill();
+        }
+        var h=pos(q.p,Math.max(0,Math.min(3,q.u)));
+        glowDot(h.x,h.y,down?2.6:2.1,rgb,down?.85:.55);
+      });
+      ctx.globalCompositeOperation='source-over';
+      /* column labels */
+      var labs=narrow?['','FDT','FAT','ONT']:['',t('FDT, distribuție'),t('FAT, acces'),t('ONT, abonat')];
+      ctx.font='500 '+(narrow?10.5:12)+'px "IBM Plex Sans",sans-serif';ctx.fillStyle='rgba(151,164,188,.95)';
+      ctx.textAlign='center';
+      var ly=H-padLabel();
+      for(var c=1;c<4;c++){
+        ctx.strokeStyle='rgba(36,57,106,.9)';ctx.lineWidth=1;
+        ctx.beginPath();ctx.moveTo(xs[c],ly-16);ctx.lineTo(xs[c],ly-8);ctx.stroke();
+        ctx.fillText(labs[c],xs[c],ly+4);
+      }
+      ctx.fillText(t('Nod central'),xs[0],ly+4);
+    }
+    function padLabel(){return H*.085}
+    function frame(ts){
+      if(!running)return;
+      var dt=Math.min(.05,(ts-last)/1000||.016);last=ts;
+      update(dt);draw();
+      raf=requestAnimationFrame(frame);
+    }
+    function start(){
+      if(!build())return;
+      seedPulses();
+      if(reduce){draw();return}
+      if(running)return;
+      running=true;last=performance.now();raf=requestAnimationFrame(frame);
+    }
+    function stop(){running=false;if(raf)cancelAnimationFrame(raf)}
+    var rt;
+    function onResize(){
+      clearTimeout(rt);
+      rt=setTimeout(function(){
+        if(document.getElementById('p-acasa').hidden)return;
+        if(build()){seedPulses();draw()}
+      },120);
+    }
+    window.addEventListener('resize',onResize);
+    if(window.ResizeObserver)new ResizeObserver(onResize).observe(cv);
+    document.addEventListener('visibilitychange',function(){
+      if(document.hidden)stop();else if(!document.getElementById('p-acasa').hidden)start();
+    });
+    return {start:start,stop:stop,redraw:function(){if(W)draw()}};
+  })();
+  onLang.push(function(){net.redraw()});
+
+  /* ---------- optical budget calculator ---------- */
+  (function(){
+    var km=document.getElementById('c-km'),sp=document.getElementById('c-sp'),cn=document.getElementById('c-cn');
+    var okm=document.getElementById('o-km'),ocn=document.getElementById('o-cn');
+    var tot=document.getElementById('r-tot'),pill=document.getElementById('r-pill'),bar=document.getElementById('r-bar'),bd=document.getElementById('r-bd');
+    function f(n){var s=n.toFixed(1);return cur==='en'?s:s.replace('.',',')}
+    function calc(){
+      var d=parseFloat(km.value),s=parseFloat(sp.value),c=parseInt(cn.value,10);
+      var fib=d*.35,con=c*.5,spl=Math.ceil(d/2)*.1,t=fib+s+con+spl,margin=28-t;
+      okm.textContent=f(d)+' km';ocn.textContent=c;
+      tot.textContent=f(t)+' dB';
+      bar.style.width=Math.min(100,t/35*100)+'%';
+      if(t>28){pill.className='pill bad';pill.textContent=t('Peste buget cu')+' '+f(-margin)+' dB'}
+      else if(margin<2){pill.className='pill warn';pill.textContent=t('La limită, rezervă')+' '+f(margin)+' dB'}
+      else{pill.className='pill ok';pill.textContent=t('În buget, rezervă')+' '+f(margin)+' dB'}
+      bd.innerHTML='<dt>'+t('Fibră')+'</dt><dd>'+f(fib)+' dB</dd><dt>Splitter</dt><dd>'+f(s)+' dB</dd><dt>'+t('Conectori')+'</dt><dd>'+f(con)+' dB</dd><dt>'+t('Îmbinări')+'</dt><dd>'+f(spl)+' dB</dd>';
+    }
+    [km,sp,cn].forEach(function(el){el.addEventListener('input',calc)});
+    calc();
+    onLang.push(calc);
+  })();
+
+  /* ---------- portfolio ---------- */
+  (function(){
+    var data=[
+      {k:'urban',t:'Urban',n:'[Nume proiect 1]',l:'[Localitate, județ]',km:'[00]',ab:'[0.000]',y:'[2026]'},
+      {k:'rural',t:'Rural',n:'[Nume proiect 2]',l:'[Localitate, județ]',km:'[00]',ab:'[0.000]',y:'[2025]'},
+      {k:'blocuri',t:'Ansamblu rezidențial',n:'[Nume proiect 3]',l:'[Localitate, județ]',km:'[00]',ab:'[0.000]',y:'[2025]'},
+      {k:'urban',t:'Urban',n:'[Nume proiect 4]',l:'[Localitate, județ]',km:'[00]',ab:'[0.000]',y:'[2024]'},
+      {k:'rural',t:'Rural',n:'[Nume proiect 5]',l:'[Localitate, județ]',km:'[00]',ab:'[0.000]',y:'[2024]'},
+      {k:'blocuri',t:'Ansamblu rezidențial',n:'[Nume proiect 6]',l:'[Localitate, județ]',km:'[00]',ab:'[0.000]',y:'[2023]'}
+    ];
+    function rnd(s){return function(){s=(s*16807)%2147483647;return s/2147483647}}
+    function thumb(i,kind){
+      var r=rnd(40+i*13),W=320,H=180,x0=28,y0=H/2,out='',dots='';
+      var b=kind==='rural'?3:kind==='blocuri'?4:5;
+      var leaves=kind==='rural'?2:kind==='blocuri'?4:3;
+      for(var a=0;a<b;a++){
+        var y1=22+(H-44)*(a+.5)/b,x1=kind==='rural'?150:118+r()*20;
+        out+='<path d="M'+x0+' '+y0+'C'+((x0+x1)/2)+' '+y0+' '+((x0+x1)/2)+' '+y1+' '+x1+' '+y1+'" stroke="#5B93FF" stroke-opacity=".75" stroke-width="1.5" fill="none"/>';
+        dots+='<circle cx="'+x1+'" cy="'+y1+'" r="3.6" fill="#04060A" stroke="#8DBBFF" stroke-width="1.4"/>';
+        for(var k=0;k<leaves;k++){
+          var y2=y1+((k+.5)/leaves-.5)*Math.min(46,(H-44)/b*.9),x2=(kind==='rural'?275:248)+r()*40;
+          out+='<path d="M'+x1+' '+y1+'C'+((x1+x2)/2)+' '+y1+' '+((x1+x2)/2)+' '+y2+' '+x2+' '+y2+'" stroke="#5B93FF" stroke-opacity=".4" stroke-width="1" fill="none"/>';
+          dots+='<circle cx="'+x2+'" cy="'+y2+'" r="2.2" fill="#8DBBFF"/>';
+        }
+      }
+      dots+='<circle cx="'+x0+'" cy="'+y0+'" r="5.5" fill="#fff"/>';
+      return '<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid slice" aria-hidden="true">'+out+dots+'</svg>';
+    }
+    var g=document.getElementById('grid');
+    var curF='all';
+    function applyF(){g.querySelectorAll('.proj').forEach(function(p){p.hidden=!(curF==='all'||p.getAttribute('data-k')===curF)})}
+    function renderGrid(){
+      g.innerHTML=data.map(function(d,i){
+        return '<article class="proj" data-k="'+d.k+'" data-i="'+i+'" tabindex="0" role="button" aria-haspopup="dialog" aria-label="'+t('Deschide detaliile proiectului')+' '+t(d.n)+'"><div class="thumb">'+thumb(i,d.k)+'<span class="kind">'+t(d.t)+'</span></div>'+
+          '<div class="pbody"><h3>'+t(d.n)+'</h3><p class="loc">'+t(d.l)+'</p>'+
+          '<div class="meta"><div><b>'+d.km+' km</b><span>'+t('fibră proiectată')+'</span></div><div><b>'+d.ab+'</b><span>'+t('abonați')+'</span></div><div><b>'+d.y+'</b><span>'+t('anul')+'</span></div></div>'+
+          '<span class="more">'+t('Vezi detalii')+'</span></div></article>';
+      }).join('');
+      applyF();
+    }
+    renderGrid();
+    onLang.push(renderGrid);
+    document.querySelectorAll('.chip').forEach(function(c){
+      c.addEventListener('click',function(){
+        var f=c.getAttribute('data-f');
+        document.querySelectorAll('.chip').forEach(function(x){x.setAttribute('aria-pressed',x===c?'true':'false')});
+        curF=f;applyF();
+      });
+    });
+
+    /* project details modal */
+    var md=document.getElementById('modal'),mb=document.getElementById('m-body'),lastF=null;
+    function openM(i){
+      var d=data[i];lastF=document.activeElement;
+      mb.innerHTML=
+        '<div class="thumb">'+thumb(i,d.k)+'<span class="kind">'+t(d.t)+'</span></div>'+
+        '<div class="m-in">'+
+          '<div><h2 id="m-t">'+t(d.n)+'</h2><p class="loc" style="margin-top:6px">'+t(d.l)+'</p></div>'+
+          '<div class="m-meta"><div><b>'+d.km+' km</b><span>'+t('fibră proiectată')+'</span></div><div><b>'+d.ab+'</b><span>'+t('abonați')+'</span></div><div><b>'+d.y+'</b><span>'+t('anul proiectului')+'</span></div></div>'+
+          '<div><h3>'+t('Despre proiect')+'</h3><p>'+t('[Descrie proiectul: ce s-a cerut, ce zonă acoperă, ce provocări au apărut și cum le-ați rezolvat.]')+'</p></div>'+
+          '<div><h3>'+t('Detalii tehnice')+'</h3><dl class="m-dl">'+
+            '<dt>'+t('Beneficiar')+'</dt><dd>'+t('[Nume beneficiar]')+'</dd>'+
+            '<dt>'+t('Tip de rețea')+'</dt><dd>'+t('[ex. FTTH, GPON]')+'</dd>'+
+            '<dt>'+t('Arhitectură')+'</dt><dd>'+t('[ex. split 1:32, număr de FDT / FAT]')+'</dd>'+
+            '<dt>'+t('Servicii prestate')+'</dt><dd>'+t('[ex. studiu de teren, proiect tehnic, avize, asistență la execuție]')+'</dd>'+
+          '</dl></div>'+
+          '<div><h3>'+t('Galerie')+'</h3><div class="m-gal"><div>'+t('[Fotografie sau plan 1]')+'</div><div>'+t('[Fotografie sau plan 2]')+'</div><div>'+t('[Fotografie sau plan 3]')+'</div></div></div>'+
+          '<div class="m-act"><a class="btn btn-p" href="#contact" data-go="contact" data-close>'+t('Discută un proiect similar')+'</a><button class="btn btn-o" type="button" data-close>'+t('Închide')+'</button></div>'+
+        '</div>';
+      md.hidden=false;document.body.style.overflow='hidden';
+      md.querySelector('.md-card').scrollTop=0;
+      md.querySelector('.m-x').focus();
+    }
+    function closeM(){
+      if(md.hidden)return;
+      md.hidden=true;document.body.style.overflow='';
+      if(lastF&&lastF.focus&&document.contains(lastF))lastF.focus();
+    }
+    g.addEventListener('click',function(e){
+      var p=e.target.closest('.proj');if(p)openM(parseInt(p.getAttribute('data-i'),10));
+    });
+    g.addEventListener('keydown',function(e){
+      if(e.key!=='Enter'&&e.key!==' ')return;
+      var p=e.target.closest('.proj');if(!p)return;
+      e.preventDefault();openM(parseInt(p.getAttribute('data-i'),10));
+    });
+    md.addEventListener('click',function(e){
+      if(e.target===md||e.target.closest('[data-close]'))closeM();
+    });
+    document.addEventListener('keydown',function(e){
+      if(md.hidden)return;
+      if(e.key==='Escape'){closeM();return}
+      if(e.key!=='Tab')return;
+      var f=md.querySelectorAll('button,a[href]');
+      if(!f.length)return;
+      var first=f[0],lastEl=f[f.length-1];
+      if(e.shiftKey&&document.activeElement===first){e.preventDefault();lastEl.focus()}
+      else if(!e.shiftKey&&document.activeElement===lastEl){e.preventDefault();first.focus()}
+    });
+  })();
+
+  /* ---------- news ---------- */
+  (function(){
+    var news=[
+      {k:'industrie',t:'Industrie',d:'[ZZ.LL.AAAA]',n:'[Titlul știrii 1]'},
+      {k:'reglementari',t:'Reglementări',d:'[ZZ.LL.AAAA]',n:'[Titlul știrii 2]'},
+      {k:'tehnologie',t:'Tehnologie',d:'[ZZ.LL.AAAA]',n:'[Titlul știrii 3]'},
+      {k:'companie',t:'Companie',d:'[ZZ.LL.AAAA]',n:'[Titlul știrii 4]'},
+      {k:'industrie',t:'Industrie',d:'[ZZ.LL.AAAA]',n:'[Titlul știrii 5]'},
+      {k:'tehnologie',t:'Tehnologie',d:'[ZZ.LL.AAAA]',n:'[Titlul știrii 6]'}
+    ];
+    var EX='[Rezumatul știrii în una sau două propoziții.]';
+    function rnd(s){return function(){s=(s*16807)%2147483647;return s/2147483647}}
+    function nthumb(i){
+      var r=rnd(90+i*17),o='',k;
+      for(k=0;k<9;k++){
+        var y=20+k*17,a=(r()-.5)*70,b=(r()-.5)*70,e=y+(r()-.5)*30;
+        o+='<path d="M-10 '+y+'C90 '+(y+a).toFixed(1)+' 210 '+(y+b).toFixed(1)+' 330 '+e.toFixed(1)+'" stroke="#5B93FF" stroke-opacity="'+(.22+r()*.5).toFixed(2)+'" stroke-width="'+(1+r()*1.2).toFixed(1)+'" fill="none"/>';
+      }
+      var cx=70+r()*190,cy=50+r()*80;
+      o+='<circle cx="'+cx.toFixed(1)+'" cy="'+cy.toFixed(1)+'" r="15" fill="#2563FF" fill-opacity=".28"/><circle cx="'+cx.toFixed(1)+'" cy="'+cy.toFixed(1)+'" r="4.5" fill="#fff"/>';
+      return '<svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true">'+o+'</svg>';
+    }
+    var feat=document.getElementById('nfeat'),ng=document.getElementById('ngrid'),
+        nm=document.getElementById('nmodal'),nb=document.getElementById('n-body'),curNF='all',lastN=null;
+    function meta(n){return '<div class="nmeta"><span>'+t(n.t)+'</span><span>'+t(n.d)+'</span></div>'}
+    function applyNF(){ng.querySelectorAll('.proj').forEach(function(p){p.hidden=!(curNF==='all'||p.getAttribute('data-k')===curNF)})}
+    function render(){
+      var f=news[0];
+      feat.innerHTML='<article class="feat" data-i="0" tabindex="0" role="button" aria-haspopup="dialog" aria-label="'+t('Deschide știrea')+' '+t(f.n)+'">'+
+        '<div class="thumb">'+nthumb(0)+'<span class="kind">'+t('Știre principală')+'</span></div>'+
+        '<div class="feat-b">'+meta(f)+'<h2>'+t(f.n)+'</h2><p>'+t(EX)+'</p><span class="more" style="color:var(--blue-hi);font-weight:600">'+t('Citește mai mult')+'</span></div></article>';
+      ng.innerHTML=news.slice(1).map(function(n,j){
+        var i=j+1;
+        return '<article class="proj" data-k="'+n.k+'" data-i="'+i+'" tabindex="0" role="button" aria-haspopup="dialog" aria-label="'+t('Deschide știrea')+' '+t(n.n)+'">'+
+          '<div class="thumb">'+nthumb(i)+'<span class="kind">'+t(n.t)+'</span></div>'+
+          '<div class="pbody">'+meta(n)+'<h3>'+t(n.n)+'</h3><p class="ex">'+t(EX)+'</p><span class="more">'+t('Citește mai mult')+'</span></div></article>';
+      }).join('');
+      applyNF();
+    }
+    render();
+    onLang.push(render);
+    document.querySelectorAll('.nchip').forEach(function(c){
+      c.addEventListener('click',function(){
+        curNF=c.getAttribute('data-nf');
+        document.querySelectorAll('.nchip').forEach(function(x){x.setAttribute('aria-pressed',x===c?'true':'false')});
+        applyNF();
+      });
+    });
+    function openN(i){
+      var n=news[i];lastN=document.activeElement;
+      nb.innerHTML='<div class="thumb">'+nthumb(i)+'<span class="kind">'+t(n.t)+'</span></div>'+
+        '<div class="m-in">'+
+          '<div style="display:grid;gap:12px">'+meta(n)+'<h2 id="n-t">'+t(n.n)+'</h2></div>'+
+          '<p>'+t(EX)+'</p>'+
+          '<p>'+t('[Textul complet al știrii: scrie sau lipește aici articolul.]')+'</p>'+
+          '<p>'+t('Sursa:')+' '+t('[Numele sursei sau linkul articolului]')+'</p>'+
+          '<div class="m-act"><a class="btn btn-p" href="#contact" data-go="contact" data-nclose>'+t('Contactează-ne')+'</a><button class="btn btn-o" type="button" data-nclose>'+t('Închide')+'</button></div>'+
+        '</div>';
+      nm.hidden=false;document.body.style.overflow='hidden';
+      nm.querySelector('.md-card').scrollTop=0;
+      nm.querySelector('.m-x').focus();
+    }
+    function closeN(){
+      if(nm.hidden)return;
+      nm.hidden=true;document.body.style.overflow='';
+      if(lastN&&lastN.focus&&document.contains(lastN))lastN.focus();
+    }
+    function hit(e){var p=e.target.closest('.feat,.proj');return p?parseInt(p.getAttribute('data-i'),10):-1}
+    [feat,ng].forEach(function(box){
+      box.addEventListener('click',function(e){var i=hit(e);if(i>=0)openN(i)});
+      box.addEventListener('keydown',function(e){
+        if(e.key!=='Enter'&&e.key!==' ')return;
+        var i=hit(e);if(i<0)return;e.preventDefault();openN(i);
+      });
+    });
+    nm.addEventListener('click',function(e){if(e.target===nm||e.target.closest('[data-nclose]'))closeN()});
+    document.addEventListener('keydown',function(e){
+      if(nm.hidden)return;
+      if(e.key==='Escape'){closeN();return}
+      if(e.key!=='Tab')return;
+      var f=nm.querySelectorAll('button,a[href]');if(!f.length)return;
+      var a=f[0],z=f[f.length-1];
+      if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus()}
+      else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus()}
+    });
+  })();
+
+  /* ---------- contact ---------- */
+  document.querySelectorAll('.copy').forEach(function(b){
+    b.addEventListener('click',function(){
+      var el=document.getElementById(b.getAttribute('data-copy')),txt=el.textContent;
+      function sel(){var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r)}
+      var done=function(){if(b.firstChild)b.firstChild.nodeValue=t('Copiat');setTimeout(applyStatic,1600)};
+      try{navigator.clipboard.writeText(txt).then(done,function(){sel()})}catch(_){sel()}
+    });
+  });
+  var msgKey='';
+  function showMsg(){document.getElementById('fmsg').textContent=msgKey?t(msgKey):''}
+  onLang.push(showMsg);
+  document.getElementById('cform').addEventListener('submit',function(e){
+    e.preventDefault();
+    var m=document.getElementById('fmsg');
+    if(!document.getElementById('f-n').value.trim()||!/\S+@\S+\.\S+/.test(document.getElementById('f-e').value)){
+      m.style.color='#FF9C9C';msgKey='Completează numele și o adresă de e-mail validă.';showMsg();return;
+    }
+    m.style.color='';msgKey='Formularul este un exemplu și nu trimite încă mesaje. Conectează-l la adresa ta de e-mail.';showMsg();
+  });
+
+  /* ---------- start ---------- */
+  var saved=null;
+  try{saved=localStorage.getItem('rsa-lang')}catch(_){}
+  if(saved==='en'||saved==='ro'){
+    setLang(saved);
+  }else{
+    setLang('ro');
+    var ls=document.getElementById('ls');
+    ls.hidden=false;document.body.style.overflow='hidden';
+    var fb=ls.querySelector('button');if(fb)fb.focus();
+  }
+  show(location.hash.replace('#','')||'acasa');
+})();
+</script>
+
+</body></html>
